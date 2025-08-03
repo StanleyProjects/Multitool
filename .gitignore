@@ -1,6 +1,7 @@
 /*
 !/checks
 !/java
+!/vcs
 !.gitignore
 !LICENSE
 !README.md
