@@ -1,7 +1,6 @@
 #!/usr/local/bin/bash
 
-if test $# -ne 2; then
- echo 'Wrong arguments!'; exit 1; fi
+. checks/eq $# 2 'Wrong arguments!'
 
 COMMIT_MESSAGE="$1"
 COMMIT_TAG="$2"
