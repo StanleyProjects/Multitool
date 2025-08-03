@@ -6,4 +6,6 @@ VERSION="$(yq -erM .version "${ISSUER}")" || exit 1
 
 . checks/require VERSION TARGET_BRANCH
 
+. vcs/tag/test.sh "${VERSION}"
+
 . vcs/commit.sh "${TARGET_BRANCH} <- ${VERSION}" "${VERSION}"

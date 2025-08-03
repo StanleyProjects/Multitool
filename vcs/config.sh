@@ -2,7 +2,9 @@
 
 . checks/require VCS_PAT
 
-GITHUB_USER="$(curl -f 'https://api.github.com/user' -H "Authorization: token $VCS_PAT")"
+VCS_API='https://api.github.com'
+
+GITHUB_USER="$(curl -f "${VCS_API}/user" -H "Authorization: token $VCS_PAT")"
 . checks/success $? 'Get user error!'
 . checks/filled "$GITHUB_USER" 'User is empty!'
 
