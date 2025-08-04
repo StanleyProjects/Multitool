@@ -1,7 +1,7 @@
 #!/usr/local/bin/bash
 
-. checks/require SOURCE_COMMIT
+. $mt/checks/require SOURCE_COMMIT
 
 git merge --no-ff --no-commit "${SOURCE_COMMIT}"
 
-. checks/success $? 'Merge error!'
+. $mt/checks/success $? 'Merge error!'

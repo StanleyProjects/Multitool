@@ -2,4 +2,4 @@
 
 gradle 'checkLicense'
 
-. checks/success $? 'Check error!'
+. $mt/checks/success $? 'Check error!'

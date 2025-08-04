@@ -4,6 +4,6 @@ VARIANT='unstable'
 
 gradle "lib:assemble${VARIANT^}Metadata"
 
-. checks/success $? "Assemble \"$VARIANT\" error!"
+. $mt/checks/success $? "Assemble \"$VARIANT\" error!"
 
-. checks/file 'lib/build/yml/metadata.yml'
+. $mt/checks/file 'lib/build/yml/metadata.yml'

@@ -1,9 +1,9 @@
 #!/usr/local/bin/bash
 
-. vcs/checkout.sh
-. vcs/config.sh
-. vcs/merge.sh
+. $mt/vcs/checkout.sh
+. $mt/vcs/config.sh
+. $mt/vcs/merge.sh
 . unstable/assemble.sh
 . unstable/commit.sh
 . unstable/check.sh
-. vcs/push.sh
+. $mt/vcs/push.sh

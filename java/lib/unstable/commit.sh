@@ -1,11 +1,11 @@
 #!/usr/local/bin/bash
 
 ISSUER='lib/build/yml/metadata.yml'
-. checks/file "${ISSUER}"
+. $mt/checks/file "${ISSUER}"
 VERSION="$(yq -erM .version "${ISSUER}")" || exit 1
 
-. checks/require VERSION TARGET_BRANCH
+. $mt/checks/require VERSION TARGET_BRANCH
 
-. vcs/tag/test.sh "${VERSION}"
+. $mt/vcs/tag/test.sh "${VERSION}"
 
-. vcs/commit.sh "${TARGET_BRANCH} <- ${VERSION}" "${VERSION}"
+. $mt/vcs/commit.sh "${TARGET_BRANCH} <- ${VERSION}" "${VERSION}"

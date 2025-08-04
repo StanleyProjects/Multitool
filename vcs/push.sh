@@ -2,4 +2,4 @@
 
 git push && git push --tag
 
-. checks/success $? 'Push error!'
+. $mt/checks/success $? 'Push error!'

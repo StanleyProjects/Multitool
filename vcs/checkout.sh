@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 
-. checks/require REPOSITORY_OWNER REPOSITORY_NAME SOURCE_COMMIT TARGET_BRANCH VCS_PAT
+. $mt/checks/require REPOSITORY_OWNER REPOSITORY_NAME SOURCE_COMMIT TARGET_BRANCH VCS_PAT
 
 VCS_URL="https://${VCS_PAT}@github.com/${REPOSITORY_OWNER}/${REPOSITORY_NAME}.git"
 
@@ -10,4 +10,4 @@ git init \
  && git fetch origin "${SOURCE_COMMIT}" \
  && git switch "${TARGET_BRANCH}"
 
-. checks/success $? 'Checkout error!'
+. $mt/checks/success $? 'Checkout error!'
