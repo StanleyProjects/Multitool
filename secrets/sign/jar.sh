@@ -27,6 +27,7 @@ if test "${RESULT//$'\n'/}" != "jar is unsigned."; then
 jarsigner -keystore "${KEYSTORE}" \
  -keypass "${KEYSTORE_PASSWORD}" -storepass "${KEYSTORE_PASSWORD}" \
  -sigalg SHA512withRSA -digestalg SHA-512 \
- "${ISSUER}" "${KEY_ALIAS}"
+ "${ISSUER}" "${KEY_ALIAS}" \
+ > /dev/null
 
 . $mt/checks/success $? "Sign jar \"${ISSUER}\" error!"
