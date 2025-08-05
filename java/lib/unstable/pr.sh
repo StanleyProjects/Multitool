@@ -1,7 +1,7 @@
 #!/usr/local/bin/bash
 
-. $mt/vcs/checkout.sh
-. $mt/vcs/config.sh
+. $mt/gh/checkout.sh
+. $mt/gh/config.sh
 . $mt/vcs/merge.sh
 . $mt/java/lib/unstable/assemble.sh
 . $mt/java/lib/unstable/commit.sh

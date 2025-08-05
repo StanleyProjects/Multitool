@@ -4,13 +4,14 @@
 
 VCS_API='https://api.github.com'
 
-GITHUB_USER="$(curl -f "${VCS_API}/user" -H "Authorization: token $VCS_PAT")"
+ISSUER='.mt/gh-user.json'
+curl -f "${VCS_API}/user" -H "Authorization: token ${VCS_PAT}" -o "${ISSUER}"
 . $mt/checks/success $? 'Get user error!'
-. $mt/checks/filled "$GITHUB_USER" 'User is empty!'
+. $mt/checks/file "${ISSUER}"
 
-USER_NAME="$(echo "$GITHUB_USER" | yq -erM .name)" || exit 1
-USER_ID="$(echo "$GITHUB_USER" | yq -erM .id)" || exit 1
-USER_LOGIN="$(echo "$GITHUB_USER" | yq -erM .login)" || exit 1
+USER_NAME="$(yq -erM .name "${ISSUER}")" || exit 1
+USER_ID="$(yq -erM .id "${ISSUER}")" || exit 1
+USER_LOGIN="$(yq -erM .login "${ISSUER}")" || exit 1
 USER_EMAIL="${USER_ID}+${USER_LOGIN}@users.noreply.github.com"
 
 git config user.name "${USER_NAME}" \
