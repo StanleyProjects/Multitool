@@ -12,24 +12,22 @@ ARTIFACT_ID="$(yq -erM .repository.artifactId "${ISSUER}")" || exit 1
 
 . $mt/checks/require VERSION ARTIFACT_ID
 
+PUBLIC_KEY='.mt/public.pem'
+curl -f "https://${REPOSITORY_OWNER}.github.io/debug-public.pem" -o "${PUBLIC_KEY}"
+. $mt/checks/success $? "Get public key \"${REPOSITORY_OWNER}\" error!"
+. $mt/checks/file "${PUBLIC_KEY}"
+
 ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
 . $mt/checks/file "${ISSUER}"
 
 . $mt/checks/require KEYSTORE KEYSTORE_PASSWORD KEY_ALIAS
 
-. $mt/secrets/sign/jar.sh "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
-. $mt/secrets/sign.sh "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
+. $mt/secrets/sign/jar.sh          "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
+. $mt/secrets/sign.sh              "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
 
-. util/sign/jar.sh "$ISSUER" "$KEYSTORE" "$KEYSTORE_PASSWORD" "$KEY_ALIAS"
-. util/sign.sh "$ISSUER" "$KEYSTORE" "$KEYSTORE_PASSWORD"
-
-ISSUER='.mt/public.pem'
-curl -f "https://${REPOSITORY_OWNER}.github.io/debug-public.pem" -o "${ISSUER}"
-. $mt/checks/success $? "Get public key \"${REPOSITORY_OWNER}\" error!"
-. $mt/checks/file "${ISSUER}"
-
-# todo sign check
-# todo sign check public
+. $mt/secrets/sign/check.sh        "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
+. $mt/secrets/sign/jar/check.sh    "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
+. $mt/secrets/sign/check/public.sh "${ISSUER}" "${PUBLIC_KEY}"
 
 MESSAGE="
 There should be files here...
