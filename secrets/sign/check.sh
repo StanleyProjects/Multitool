@@ -17,14 +17,10 @@ openssl "$KEYSTORE_TYPE" -in "${KEYSTORE}" -nokeys -passin "pass:${KEYSTORE_PASS
 
 . $mt/checks/file "${ISSUER}"
 
-rm "${ISSUER}.sig"
-
-openssl dgst -sha512 -sign <(
-  openssl "${KEYSTORE_TYPE}" -in "${KEYSTORE}" -nocerts \
-   -passin "pass:${KEYSTORE_PASSWORD}" \
-   -passout "pass:${KEYSTORE_PASSWORD}" \
- ) -passin "pass:${KEYSTORE_PASSWORD}" -out "${ISSUER}.sig" "${ISSUER}"
-
-. $mt/checks/success $? "Sign \"${ISSUER}\" error!"
-
 . $mt/checks/file "${ISSUER}.sig"
+
+openssl dgst -sha512 -verify <(
+  openssl "${KEYSTORE_TYPE}" -in "${KEYSTORE}" -nokeys -passin "pass:${KEYSTORE_PASSWORD}" | openssl x509 -pubkey -noout
+ ) -signature "${ISSUER}.sig" "${ISSUER}"
+
+. $mt/checks/success $? "Verify \"${ISSUER}\" error!"
