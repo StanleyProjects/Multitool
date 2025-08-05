@@ -17,17 +17,21 @@ curl -f "https://${REPOSITORY_OWNER}.github.io/debug-public.pem" -o "${PUBLIC_KE
 . $mt/checks/success $? "Get public key \"${REPOSITORY_OWNER}\" error!"
 . $mt/checks/file "${PUBLIC_KEY}"
 
-ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
-. $mt/checks/file "${ISSUER}"
+declare -A JARS=(
+ ["${ARTIFACT_ID}-${VERSION}.jar"]="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
+)
 
 . $mt/checks/require KEYSTORE KEYSTORE_PASSWORD KEY_ALIAS
 
-. $mt/secrets/sign/jar.sh          "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
-. $mt/secrets/sign.sh              "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
-
-. $mt/secrets/sign/check.sh        "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
-. $mt/secrets/sign/jar/check.sh    "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
-. $mt/secrets/sign/check/public.sh "${ISSUER}" "${PUBLIC_KEY}"
+for FILE_NAME in "${!JARS[@]}"; do
+ ISSUER="${JARS["${FILE_NAME}"]}"
+ . $mt/checks/file "${ISSUER}"
+ . $mt/secrets/sign/jar.sh          "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
+ . $mt/secrets/sign.sh              "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
+ . $mt/secrets/sign/check.sh        "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
+ . $mt/secrets/sign/jar/check.sh    "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
+ . $mt/secrets/sign/check/public.sh "${ISSUER}" "${PUBLIC_KEY}"
+done
 
 MESSAGE="
 There should be files here...
@@ -35,5 +39,8 @@ There should be files here...
 
 . $mt/gh/release.sh "${VERSION}" "${MESSAGE}"
 
-. $mt/gh/release/upload.sh "${VERSION}" "lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"     "${ARTIFACT_ID}-${VERSION}.jar"
-. $mt/gh/release/upload.sh "${VERSION}" "lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar.sig" "${ARTIFACT_ID}-${VERSION}.jar.sig"
+for FILE_NAME in "${!JARS[@]}"; do
+ ISSUER="${JARS["${FILE_NAME}"]}"
+ . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}"     "${FILE_NAME}"
+ . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sig" "${FILE_NAME}.sig"
+done
