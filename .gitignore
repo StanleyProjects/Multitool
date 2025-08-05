@@ -2,6 +2,7 @@
 !/checks
 !/gh
 !/java
+!/secrets
 !/vcs
 !.gitignore
 !LICENSE

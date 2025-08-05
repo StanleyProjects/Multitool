@@ -20,6 +20,9 @@ curl -f "https://${REPOSITORY_OWNER}.github.io/debug-public.pem" -o "${ISSUER}"
 . $mt/checks/success $? "Get public key \"${REPOSITORY_OWNER}\" error!"
 . $mt/checks/file "${ISSUER}"
 
+#. util/sign/jar.sh "$ISSUER" "$KEYSTORE" "$KEYSTORE_PASSWORD" "$KEY_ALIAS"
+. util/sign.sh "$ISSUER" "$KEYSTORE" "$KEYSTORE_PASSWORD" # todo
+
 # todo sign
 # todo sign check
 # todo upload
