@@ -23,29 +23,24 @@ curl -f "${VCS_URL}" -o "${ISSUER}"
 TAG_SHA="$(yq -erM .object.sha "${ISSUER}")" || exit 1
 . $mt/checks/filled "${TAG_SHA}" 'Tag SHA is empty!'
 
-REQUEST_BODY="{
-\"name\":             \"${RELEASE_VERSION}\",
-\"tag_name\":         \"${RELEASE_VERSION}\",
-\"target_commitish\": \"${TAG_SHA}\",
-\"body\":             \"${RELEASE_MESSAGE}\",
-\"draft\": false, \"prerelease\": true}"
+REQUEST_BODY='{draft: false, prerelease: true}'
+for it in \
+  ".name=\"${RELEASE_VERSION}\"" \
+  ".tag_name=\"${RELEASE_VERSION}\"" \
+  ".target_commitish=\"${TAG_SHA}\"" \
+  ".body=\"${RELEASE_MESSAGE}\""; do
+ REQUEST_BODY="$(echo "${REQUEST_BODY}" | yq -M -o=json "${it}")"
+ . $mt/checks/success $? 'Request body error!'
+done
 
 VCS_URL="${REP_URL}/releases"
 ISSUER=".mt/gh-${RELEASE_VERSION}-release.json"
-curl -f \
- -X POST "${VCS_URL}" \
+curl -X POST "${VCS_URL}" \
  -H "Authorization: token ${VCS_PAT}" \
  -d "${REQUEST_BODY}" \
  -o "${ISSUER}"
 
 . $mt/checks/success $? "Release \"${RELEASE_VERSION}\" error!"
 . $mt/checks/file "${ISSUER}"
-
-PUBLIC_KEY="$(curl -f "https://${REPOSITORY_OWNER}.github.io/debug-public.pem")"
-. $mt/checks/success $? "Get public key \"${REPOSITORY_OWNER}\" error!"
-
-# todo sign
-# todo sign check
-# todo upload
 
 echo "https://github.com/${REPOSITORY_OWNER}/${REPOSITORY_NAME}/releases/tag/${RELEASE_VERSION}"
