@@ -4,13 +4,16 @@ ISSUER='lib/build/yml/metadata.yml'
 . $mt/checks/file "${ISSUER}"
 VERSION="$(yq -erM .version "${ISSUER}")" || exit 1
 
-. $mt/checks/require VERSION
+ISSUER='lib/build/yml/maven-metadata.yml'
+. $mt/checks/file "${ISSUER}"
+ARTIFACT_ID="$(yq -erM .repository.artifactId "${ISSUER}")" || exit 1
 
-MESSAGE="
-There should be files here...
-" # todo
+. $mt/checks/eq "${VERSION}" "$(yq -erM .version "${ISSUER}")" 'Version error!'
 
-. $mt/gh/release.sh "${VERSION}" "${MESSAGE}"
+. $mt/checks/require VERSION ARTIFACT_ID
+
+ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
+. $mt/checks/file "${ISSUER}"
 
 ISSUER='.mt/public.pem'
 curl -f "https://${REPOSITORY_OWNER}.github.io/debug-public.pem" -o "${ISSUER}"
@@ -20,3 +23,11 @@ curl -f "https://${REPOSITORY_OWNER}.github.io/debug-public.pem" -o "${ISSUER}"
 # todo sign
 # todo sign check
 # todo upload
+
+MESSAGE="
+There should be files here...
+" # todo
+
+. $mt/gh/release.sh "${VERSION}" "${MESSAGE}"
+
+. $mt/gh/release/upload.sh "${VERSION}" "lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar" "${ARTIFACT_ID}-${VERSION}.jar"
