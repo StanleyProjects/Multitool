@@ -17,21 +17,17 @@ curl -f "https://${REPOSITORY_OWNER}.github.io/debug-public.pem" -o "${PUBLIC_KE
 . $mt/checks/success $? "Get public key \"${REPOSITORY_OWNER}\" error!"
 . $mt/checks/file "${PUBLIC_KEY}"
 
-declare -A JARS=(
- ["${ARTIFACT_ID}-${VERSION}.jar"]="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
-)
-
 . $mt/checks/require KEYSTORE KEYSTORE_PASSWORD KEY_ALIAS
 
-for FILE_NAME in "${!JARS[@]}"; do
- ISSUER="${JARS["${FILE_NAME}"]}"
- . $mt/checks/file "${ISSUER}"
- . $mt/secrets/sign/jar.sh          "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
- . $mt/secrets/sign.sh              "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
- . $mt/secrets/sign/check.sh        "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
- . $mt/secrets/sign/jar/check.sh    "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
- . $mt/secrets/sign/check/public.sh "${ISSUER}" "${PUBLIC_KEY}"
-done
+ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
+
+. $mt/checks/file "${ISSUER}"
+. $mt/secrets/sign/jar.sh          "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
+. $mt/secrets/sign.sh              "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
+. $mt/secrets/sign/check.sh        "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
+. $mt/secrets/sign/jar/check.sh    "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
+. $mt/secrets/sign/check/public.sh "${ISSUER}" "${PUBLIC_KEY}"
+. $mt/secrets/sha256.sh            "${ISSUER}"
 
 MESSAGE="
 There should be files here...
@@ -39,8 +35,14 @@ There should be files here...
 
 . $mt/gh/release.sh "${VERSION}" "${MESSAGE}"
 
-for FILE_NAME in "${!JARS[@]}"; do
- ISSUER="${JARS["${FILE_NAME}"]}"
- . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}"     "${FILE_NAME}"
- . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sig" "${FILE_NAME}.sig"
-done
+FILE_NAME="${ARTIFACT_ID}-${VERSION}.jar"
+ISSUER="lib/build/libs/${FILE_NAME}"
+
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}"        "${FILE_NAME}"
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sig"    "${FILE_NAME}.sig"
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sha256" "${FILE_NAME}.sha256"
+
+FILE_NAME="${ARTIFACT_ID}-${VERSION}-sources.jar"
+ISSUER="lib/build/libs/${FILE_NAME}"
+
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}" "${FILE_NAME}"
