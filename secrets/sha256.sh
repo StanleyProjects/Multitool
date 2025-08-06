@@ -10,8 +10,7 @@ ISSUER="$1"
 
 rm "${ISSUER}.sha256"
 
-# cat "${ISSUER}" | openssl dgst -sha256 -binary | xxd -p -c 64 > "${ISSUER}.sha256"
-cat "${ISSUER}" | openssl dgst -sha256 -binary | od -A n -v -t x1 | tr -d ' \n' > "${ISSUER}.sha256" # todo xxd
+cat "${ISSUER}" | openssl dgst -sha256 -binary | xxd -p -c 64 > "${ISSUER}.sha256"
 
 . $mt/checks/success $? "Hash \"${ISSUER}\" error!"
 
