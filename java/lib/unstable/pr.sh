@@ -7,3 +7,4 @@
 . $mt/java/lib/unstable/commit.sh
 . $mt/java/lib/unstable/check.sh
 . $mt/vcs/push.sh
+. $mt/java/lib/unstable/gh/release.sh
