@@ -1,0 +1,4 @@
+#!/usr/local/bin/bash
+
+if [ "$1" != "$2" ]; then
+ echo "Expected is \"$1\", but actual is \"$2\"!"; exit 1; fi
