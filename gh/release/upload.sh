@@ -6,7 +6,10 @@ RELEASE_VERSION="$1"
 FILE_PATH="$2"
 FILE_NAME="$3"
 
-UPLOAD_URL="$(yq -erM .upload_url ".mt/gh-${RELEASE_VERSION}-release.json")" || exit 1
+RELEASE_FILE=".mt/gh-${RELEASE_VERSION}-release.json"
+. $mt/checks/file "${RELEASE_FILE}"
+
+UPLOAD_URL="$(yq -erM .upload_url "${RELEASE_FILE}")" || exit 1
 UPLOAD_URL="${UPLOAD_URL//\{?name,label\}/}"
 
 . $mt/checks/require REPOSITORY_OWNER REPOSITORY_NAME VCS_PAT RELEASE_VERSION UPLOAD_URL FILE_PATH FILE_NAME
