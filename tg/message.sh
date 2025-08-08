@@ -11,10 +11,19 @@ MESSAGE="${MESSAGE//$'\n'/"%0A"}"
 MESSAGE="${MESSAGE//$'\r'/""}"
 MESSAGE="${MESSAGE//"_"/"\_"}"
 
+REQUEST_BODY='{parse_mode: "markdown"}'
+
+for it in \
+  '.link_preview_options.is_disabled=true' \
+  ".text=\"${MESSAGE}\"" \
+  ".chat_id=${TG_CHAT_ID}"; do
+ REQUEST_BODY="$(echo "${REQUEST_BODY}" | yq -M -o=json "${it}")"
+ . $mt/checks/success $? 'Request body error!'
+done
+
 CODE=$(curl -w %{http_code} -o /dev/null \
  "https://api.telegram.org/bot${TG_BOT_ID}:${TG_BOT_TOKEN}/sendMessage" \
- -d chat_id="${TG_CHAT_ID}" \
- -d text="${MESSAGE}" \
- -d parse_mode=markdown)
+ -H 'Content-Type: application/json' \
+ --data "${REQUEST_BODY}")
 
 . $mt/checks/eq $CODE 200 "Send tg message error!"
