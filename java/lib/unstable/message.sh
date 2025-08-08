@@ -24,7 +24,7 @@ VERSION="$(yq -erM .version "${ISSUER}")" || exit 1
 
 RELEASE_FILE=".mt/gh-${VERSION}-release.json"
 . $mt/checks/file "${RELEASE_FILE}"
-RELEASE_URL="$(yq -erM .url "${RELEASE_FILE}")" || exit 1
+RELEASE_URL="$(yq -erM .html_url "${RELEASE_FILE}")" || exit 1
 
 MESSAGE="
 [${REPOSITORY_OWNER}](${OWNER_URL}) / [${REPOSITORY_NAME}](${REP_URL})
@@ -34,7 +34,7 @@ MESSAGE="
 \`| *\` [${SOURCE_COMMIT::7}](${REP_URL}/commit/${SOURCE_COMMIT})
 \`*\` [${TARGET_COMMIT::7}](${REP_URL}/commit/${TARGET_COMMIT})
 
-[Maven](${MVN_REP}/maven-metadata.xml)
+Maven [metadata](${MVN_REP}/maven-metadata.xml)
 
 Release [${VERSION}](${RELEASE_URL})
 "
