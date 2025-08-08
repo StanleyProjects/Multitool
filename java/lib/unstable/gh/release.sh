@@ -31,7 +31,6 @@ ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
 . $mt/secrets/sha256.sh            "${ISSUER}"
 
 MVN_URL='https://central.sonatype.com/repository/maven-snapshots'
-
 MVN_REP="${MVN_URL}/${GROUP_ID//.//}/${ARTIFACT_ID}"
 
 MESSAGE="
