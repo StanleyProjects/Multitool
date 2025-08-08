@@ -19,30 +19,15 @@ SOURCES_FILE="lib/build/libs/${ARTIFACT_ID}-${VERSION}-sources.jar"
 POM_FILE="lib/build/libs/${ARTIFACT_ID}-${VERSION}.pom"
 . $mt/checks/file "${POM_FILE}"
 
-MVN_REPOSITORY_ID='central-portal-snapshots'
-
-echo "
-<settings>
- <servers>
-  <server>
-   <id>${MVN_REPOSITORY_ID}</id>
-   <username>${MVN_SNAPSHOT_USER}</username>
-   <password>${MVN_SNAPSHOT_PASSWORD}</password>
-  </server>
- </servers>
-</settings>
-" > '.mt/settings.xml'
-
 MVN_URL='https://central.sonatype.com/repository/maven-snapshots'
 
 mvn deploy:deploy-file \
- -Duser.home='.mt'
+ -DrepositoryId='central-portal-snapshots' \
+ -Drepo.username="${MVN_SNAPSHOT_USER}" \
+ -Drepo.password="${MVN_SNAPSHOT_PASSWORD}" \
  -Durl="${MVN_URL}" \
- -DrepositoryId="${MVN_REPOSITORY_ID}" \
  -Dfile="${ARTIFACT_FILE}" \
  -Dsources="${SOURCES_FILE}" \
  -DpomFile="${POM_FILE}"
 
 . $mt/checks/success $? "Maven snapshot deploy error!"
-
-rm '.mt/settings.xml'
