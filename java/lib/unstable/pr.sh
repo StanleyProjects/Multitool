@@ -7,6 +7,6 @@
 . $mt/java/lib/unstable/commit.sh
 . $mt/java/lib/unstable/check.sh
 . $mt/gh/push.sh
-. $mt/java/lib/unstable/gh/release.sh
 . $mt/java/lib/unstable/mvn/snapshot/deploy.sh
+. $mt/java/lib/unstable/gh/release.sh
 . $mt/java/lib/unstable/message.sh

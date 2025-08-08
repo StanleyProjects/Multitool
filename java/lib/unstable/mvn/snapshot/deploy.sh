@@ -19,8 +19,6 @@ SOURCES_FILE="lib/build/libs/${ARTIFACT_ID}-${VERSION}-sources.jar"
 POM_FILE="lib/build/libs/${ARTIFACT_ID}-${VERSION}.pom"
 . $mt/checks/file "${POM_FILE}"
 
-MVN_URL='https://central.sonatype.com/repository/maven-snapshots'
-
 MVN_REPOSITORY_ID='central-portal-snapshots'
 
 echo "
@@ -34,6 +32,8 @@ echo "
  </servers>
 </settings>
 " > '.mt/settings.xml'
+
+MVN_URL='https://central.sonatype.com/repository/maven-snapshots'
 
 mvn deploy:deploy-file \
  -Duser.home='.mt'

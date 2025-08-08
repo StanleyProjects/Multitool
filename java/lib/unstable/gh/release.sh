@@ -6,6 +6,7 @@ VERSION="$(yq -erM .version "${ISSUER}")" || exit 1
 
 ISSUER='lib/build/yml/maven-metadata.yml'
 . $mt/checks/file "${ISSUER}"
+GROUP_ID="$(yq -erM .repository.groupId "${ISSUER}")" || exit 1
 ARTIFACT_ID="$(yq -erM .repository.artifactId "${ISSUER}")" || exit 1
 
 . $mt/checks/eq "${VERSION}" "$(yq -erM .version "${ISSUER}")" 'Version error!'
@@ -29,9 +30,13 @@ ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
 . $mt/secrets/sign/check/public.sh "${ISSUER}" "${PUBLIC_KEY}"
 . $mt/secrets/sha256.sh            "${ISSUER}"
 
+MVN_URL='https://central.sonatype.com/repository/maven-snapshots'
+
+MVN_REP="${MVN_URL}/${GROUP_ID//.//}/${ARTIFACT_ID}"
+
 MESSAGE="
-There should be files here...
-" # todo
+[Maven](${MVN_REP}/maven-metadata.xml)
+"
 
 . $mt/gh/release.sh "${VERSION}" "${MESSAGE}"
 
