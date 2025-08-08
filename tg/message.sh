@@ -6,11 +6,6 @@ MESSAGE="$1"
 
 . $mt/checks/require TG_BOT_ID TG_BOT_TOKEN TG_CHAT_ID MESSAGE
 
-MESSAGE="${MESSAGE//"#"/"%23"}"
-MESSAGE="${MESSAGE//$'\n'/"%0A"}"
-MESSAGE="${MESSAGE//$'\r'/""}"
-MESSAGE="${MESSAGE//"_"/"\_"}"
-
 REQUEST_BODY='{parse_mode: "markdown"}'
 
 for it in \
