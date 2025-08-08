@@ -5,7 +5,8 @@ VARIANT='unstable'
 gradle "lib:assemble${VARIANT^}Metadata" \
  && gradle "lib:assemble${VARIANT^}MavenMetadata" \
  && gradle "lib:assemble${VARIANT^}Jar" \
- && gradle "lib:assemble${VARIANT^}Source"
+ && gradle "lib:assemble${VARIANT^}Source" \
+ && gradle "lib:assemble${VARIANT^}Pom"
 
 . $mt/checks/success $? "Assemble \"$VARIANT\" error!"
 
