@@ -34,9 +34,10 @@ MESSAGE="
 \`| *\` [${SOURCE_COMMIT::7}](${REP_URL}/commit/${SOURCE_COMMIT})
 \`*\` [${TARGET_COMMIT::7}](${REP_URL}/commit/${TARGET_COMMIT})
 
-Maven [metadata](${MVN_REP}/maven-metadata.xml)
-
-Release [${VERSION}](${RELEASE_URL})
+[${VERSION}](${RELEASE_URL}) / [Maven](${MVN_REP}/maven-metadata.xml)
 "
 
-. $mt/tg/message.sh "${MESSAGE}"
+ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
+. $mt/checks/file "${ISSUER}"
+
+. $mt/tg/file.sh "${MESSAGE}" "${ISSUER}"
