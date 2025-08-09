@@ -9,9 +9,12 @@ ISSUER='lib/build/yml/maven-metadata.yml'
 GROUP_ID="$(yq -erM .repository.groupId "${ISSUER}")" || exit 1
 ARTIFACT_ID="$(yq -erM .repository.artifactId "${ISSUER}")" || exit 1
 
-. $mt/checks/eq "${VERSION}" "$(yq -erM .version "${ISSUER}")" 'Version error!'
+ISSUER=".mt/gh-commit.json"
+. $mt/checks/file "${ISSUER}"
 
-. $mt/checks/require REPOSITORY_OWNER VERSION GROUP_ID ARTIFACT_ID
+RESULT_COMMIT="$(yq -erM .sha "${ISSUER}")" || exit 1
+
+. $mt/checks/require REPOSITORY_OWNER REPOSITORY_NAME VERSION GROUP_ID ARTIFACT_ID TARGET_COMMIT RESULT_COMMIT
 
 PUBLIC_KEY='.mt/public.pem'
 curl -f "https://${REPOSITORY_OWNER}.github.io/debug-public.pem" -o "${PUBLIC_KEY}"
@@ -33,8 +36,12 @@ ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
 MVN_URL='https://central.sonatype.com/repository/maven-snapshots'
 MVN_REP="${MVN_URL}/${GROUP_ID//.//}/${ARTIFACT_ID}"
 
+REP_URL="https://github.com/${REPOSITORY_OWNER}/${REPOSITORY_NAME}"
+
 MESSAGE="
-[maven-metadata.xml](${MVN_REP}/maven-metadata.xml)
+[Changes](${REP_URL}/compare/${TARGET_COMMIT}...${RESULT_COMMIT}) from [${TARGET_COMMIT::7}](${REP_URL}/commit/${TARGET_COMMIT}) to [${RESULT_COMMIT::7}](${REP_URL}/commit/${RESULT_COMMIT})
+
+Maven [metadata.xml](${MVN_REP}/maven-metadata.xml)
 "
 
 . $mt/gh/release.sh "${VERSION}" "${MESSAGE}"
