@@ -48,6 +48,9 @@ MESSAGE+="[Changes](${REP_URL}/compare/${TARGET_COMMIT}...${RESULT_COMMIT})"
 MESSAGE+=" / "
 MESSAGE+="[Maven](${MVN_REP}/maven-metadata.xml)"
 
+MESSAGE+=" / "
+MESSAGE+="[Artifact](${REP_URL}/releases/download/${VERSION}/${ARTIFACT_ID}-${VERSION}.jar)"
+
 ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
 . $mt/checks/file "${ISSUER}"
 
