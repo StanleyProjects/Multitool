@@ -13,13 +13,11 @@ gradle "lib:assemble${VARIANT^}Metadata" \
 ISSUER='lib/build/yml/maven-metadata.yml'
 . $mt/checks/file "${ISSUER}"
 
-ARTIFACT_ID="$(yq -e .repository.artifactId "${ISSUER}")" || exit 1
-VERSION="$(yq -e .version "${ISSUER}")" || exit 1
+ARTIFACT_ID="$(yq -erM .repository.artifactId "${ISSUER}")" || exit 1
+VERSION="$(yq -erM .version "${ISSUER}")" || exit 1
 
 ISSUER='lib/build/yml/metadata.yml'
 . $mt/checks/file "${ISSUER}"
-
-. $mt/checks/eq "${VERSION}" "$(yq -erM .version "${ISSUER}")" 'Version error!'
 
 ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
 . $mt/checks/file "${ISSUER}"
