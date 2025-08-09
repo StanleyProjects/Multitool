@@ -26,16 +26,27 @@ RELEASE_FILE=".mt/gh-${VERSION}-release.json"
 . $mt/checks/file "${RELEASE_FILE}"
 RELEASE_URL="$(yq -erM .html_url "${RELEASE_FILE}")" || exit 1
 
-MESSAGE="
-[${REPOSITORY_OWNER}](${OWNER_URL}) / [${REPOSITORY_NAME}](${REP_URL})
+MESSAGE="[${REPOSITORY_OWNER}](${OWNER_URL}) / [${REPOSITORY_NAME}](${REP_URL})"
 
+MESSAGE+=$'\n'
+MESSAGE+="
 \`*\` [${RESULT_COMMIT::7}](${REP_URL}/commit/${RESULT_COMMIT})
 \`|\\\`
 \`| *\` [${SOURCE_COMMIT::7}](${REP_URL}/commit/${SOURCE_COMMIT})
 \`*\` [${TARGET_COMMIT::7}](${REP_URL}/commit/${TARGET_COMMIT})
-
-[${VERSION}](${RELEASE_URL}) / [Maven](${MVN_REP}/maven-metadata.xml)
 "
+
+MESSAGE+=$'\n'
+MESSAGE+="\`${VERSION}\`"
+
+MESSAGE+=" / "
+MESSAGE+="[Release](${RELEASE_URL})"
+
+MESSAGE+=" / "
+MESSAGE+="[Changes](${REP_URL}/compare/${TARGET_COMMIT}...${RESULT_COMMIT})"
+
+MESSAGE+=" / "
+MESSAGE+="[Maven](${MVN_REP}/maven-metadata.xml)"
 
 ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
 . $mt/checks/file "${ISSUER}"
