@@ -11,7 +11,7 @@ ARTIFACT_ID="$(yq -erM .repository.artifactId "${ISSUER}")" || exit 1
 
 . $mt/checks/eq "${VERSION}" "$(yq -erM .version "${ISSUER}")" 'Version error!'
 
-. $mt/checks/require VERSION ARTIFACT_ID
+. $mt/checks/require REPOSITORY_OWNER VERSION GROUP_ID ARTIFACT_ID
 
 PUBLIC_KEY='.mt/public.pem'
 curl -f "https://${REPOSITORY_OWNER}.github.io/debug-public.pem" -o "${PUBLIC_KEY}"
@@ -22,7 +22,7 @@ curl -f "https://${REPOSITORY_OWNER}.github.io/debug-public.pem" -o "${PUBLIC_KE
 
 ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
 
-. $mt/checks/file "${ISSUER}"
+. $mt/checks/file                  "${ISSUER}"
 . $mt/secrets/sign/jar.sh          "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
 . $mt/secrets/sign.sh              "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
 . $mt/secrets/sign/check.sh        "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
@@ -34,7 +34,7 @@ MVN_URL='https://central.sonatype.com/repository/maven-snapshots'
 MVN_REP="${MVN_URL}/${GROUP_ID//.//}/${ARTIFACT_ID}"
 
 MESSAGE="
-[Maven](${MVN_REP}/maven-metadata.xml)
+[maven-metadata.xml](${MVN_REP}/maven-metadata.xml)
 "
 
 . $mt/gh/release.sh "${VERSION}" "${MESSAGE}"
