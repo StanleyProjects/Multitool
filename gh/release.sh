@@ -16,9 +16,8 @@ CODE="$(curl -s -w %{http_code} -o /dev/null "${VCS_URL}")"
 
 VCS_URL="${REP_URL}/git/ref/tags/${RELEASE_VERSION}"
 ISSUER=".mt/gh-${RELEASE_VERSION}-tag.json"
-echo "try get tag \"${RELEASE_VERSION}\" by url ${VCS_URL}" # todo
-curl -f "${VCS_URL}" -o "${ISSUER}" -H 'Cache-Control: no-cache, no-store'
-. $mt/checks/success $? "Get tag \"${RELEASE_VERSION}\" error$(cat $ISSUER)!" # todo
+curl -f "${VCS_URL}?salt=${RANDOM}" -o "${ISSUER}"
+. $mt/checks/success $? "Get tag \"${RELEASE_VERSION}\" error!"
 . $mt/checks/file "${ISSUER}"
 
 TAG_TYPE="$(yq -erM .object.type "${ISSUER}")" || exit 1
