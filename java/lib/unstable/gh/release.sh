@@ -46,14 +46,14 @@ Maven [metadata.xml](${MVN_REP}/maven-metadata.xml)
 
 . $mt/gh/release.sh "${VERSION}" "${MESSAGE}"
 
-FILE_NAME="${ARTIFACT_ID}-${VERSION}.jar"
-ISSUER="lib/build/libs/${FILE_NAME}"
+ISSUER_NAME="${ARTIFACT_ID}-${VERSION}.jar"
+ISSUER="lib/build/libs/${ISSUER_NAME}"
 
-. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}"        "${FILE_NAME}"
-. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sig"    "${FILE_NAME}.sig"
-. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sha256" "${FILE_NAME}.sha256"
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}"        "${ISSUER_NAME}"
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sig"    "${ISSUER_NAME}.sig"
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sha256" "${ISSUER_NAME}.sha256"
 
-FILE_NAME="${ARTIFACT_ID}-${VERSION}-sources.jar"
-ISSUER="lib/build/libs/${FILE_NAME}"
+ISSUER_NAME="${ARTIFACT_ID}-${VERSION}-sources.jar"
+ISSUER="lib/build/libs/${ISSUER_NAME}"
 
-. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}" "${FILE_NAME}"
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}" "${ISSUER_NAME}"
