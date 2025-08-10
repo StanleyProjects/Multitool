@@ -14,41 +14,49 @@ CODE="$(curl -s -w %{http_code} -o /dev/null "${VCS_URL}")"
 . $mt/checks/ne $CODE 200 "Release \"${RELEASE_VERSION}\" exists!"
 . $mt/checks/eq $CODE 404 "Deploy \"${RELEASE_VERSION}\" error!"
 
-VCS_URL="${REP_URL}/git/refs/tags/${RELEASE_VERSION}"
+VCS_URL="${REP_URL}/git/ref/tags/${RELEASE_VERSION}"
 ISSUER=".mt/gh-${RELEASE_VERSION}-tag.json"
-curl -f "${VCS_URL}" -o "${ISSUER}"
-. $mt/checks/success $? "Get tag \"${RELEASE_VERSION}\" error!"
+echo "try get tag \"${RELEASE_VERSION}\" by url ${VCS_URL}" # todo
+curl -f "${VCS_URL}" -o "${ISSUER}" -H 'Cache-Control: no-cache, no-store'
+. $mt/checks/success $? "Get tag \"${RELEASE_VERSION}\" error$(cat $ISSUER)!" # todo
 . $mt/checks/file "${ISSUER}"
+
+TAG_TYPE="$(yq -erM .object.type "${ISSUER}")" || exit 1
+. $mt/checks/eq "${TAG_TYPE}" 'tag' 'Tag type error!'
 
 TAG_SHA="$(yq -erM .object.sha "${ISSUER}")" || exit 1
 . $mt/checks/filled "${TAG_SHA}" 'Tag SHA is empty!'
+
+VCS_URL="${REP_URL}/git/tags/${TAG_SHA}"
+ISSUER=".mt/gh-${RELEASE_VERSION}-tag.json"
+curl -f "${VCS_URL}" -o "${ISSUER}"
+. $mt/checks/success $? "Get tag \"${TAG_SHA}\" error!"
+. $mt/checks/file "${ISSUER}"
+
+TAG_VERIFIED="$(yq -erM .verification.verified "${ISSUER}")" || exit 1
+. $mt/checks/eq "${TAG_VERIFIED}" 'true' 'Tag verification error!'
+
+COMMIT_SHA="$(yq -erM .object.sha "${ISSUER}")" || exit 1
+. $mt/checks/filled "${COMMIT_SHA}" 'Commit SHA is empty!'
 
 REQUEST_BODY='{draft: false, prerelease: true}'
 for it in \
   ".name=\"${RELEASE_VERSION}\"" \
   ".tag_name=\"${RELEASE_VERSION}\"" \
-  ".target_commitish=\"${TAG_SHA}\"" \
+  ".target_commitish=\"${COMMIT_SHA}\"" \
   ".body=\"${RELEASE_MESSAGE}\""; do
  REQUEST_BODY="$(echo "${REQUEST_BODY}" | yq -M -o=json "${it}")"
  . $mt/checks/success $? 'Request body error!'
 done
 
-# todo
-
 VCS_URL="${REP_URL}/releases"
 ISSUER=".mt/gh-${RELEASE_VERSION}-release.json"
-CODE="$(curl -v -s -w %{http_code} -X POST "${VCS_URL}" \
+CODE="$(curl -s -w %{http_code} -X POST "${VCS_URL}" \
  -H "Authorization: token ${VCS_PAT}" \
  -d "${REQUEST_BODY}" \
  -o "${ISSUER}")"
 
-if test "${CODE}" != '201'; then
- echo "Release \"${RELEASE_VERSION}\" error!"
- echo "${REQUEST_BODY}" | yq
- cat "${ISSUER}"
- exit 1; fi
-
-# todo
+. $mt/checks/eq "${CODE}" 201 "Release \"${RELEASE_VERSION}\" error!"
 
 . $mt/checks/file "${ISSUER}"
 

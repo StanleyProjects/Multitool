@@ -8,4 +8,4 @@ VERSION="$(yq -erM .version "${ISSUER}")" || exit 1
 
 . $mt/gh/tag/test.sh "${VERSION}"
 
-. $mt/vcs/commit.sh "${TARGET_BRANCH} <- ${VERSION}" "${VERSION}"
+. $mt/vcs/commit.sh "${VERSION}" "${TARGET_BRANCH} <- ${VERSION}"
