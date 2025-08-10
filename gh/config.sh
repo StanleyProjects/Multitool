@@ -39,6 +39,10 @@ USER_ID="$(yq -erM .id "${ISSUER}")" || exit 1
 USER_LOGIN="$(yq -erM .login "${ISSUER}")" || exit 1
 USER_EMAIL="${USER_ID}+${USER_LOGIN}@users.noreply.github.com"
 
+GPG_UIDS="$(gpg --list-keys --keyid-format long --with-colons | grep uid)"
+if [[ "${GPG_UIDS}" != *"<${USER_EMAIL}>"* ]]; then
+ echo 'GPG email error!'; exit 1; fi
+
 git config user.name "${USER_NAME}" \
  && git config user.email "${USER_EMAIL}" \
  && git config gpg.program '/usr/local/bin/gpgloopback.sh' \

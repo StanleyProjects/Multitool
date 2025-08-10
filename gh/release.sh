@@ -33,14 +33,23 @@ for it in \
  . $mt/checks/success $? 'Request body error!'
 done
 
+# todo
+
 VCS_URL="${REP_URL}/releases"
 ISSUER=".mt/gh-${RELEASE_VERSION}-release.json"
-curl -X POST "${VCS_URL}" \
+CODE="$(curl -v -s -w %{http_code} -X POST "${VCS_URL}" \
  -H "Authorization: token ${VCS_PAT}" \
  -d "${REQUEST_BODY}" \
- -o "${ISSUER}"
+ -o "${ISSUER}")"
 
-. $mt/checks/success $? "Release \"${RELEASE_VERSION}\" error!"
+if test "${CODE}" != '201'; then
+ echo "Release \"${RELEASE_VERSION}\" error!"
+ echo "${REQUEST_BODY}" | yq
+ cat "${ISSUER}"
+ exit 1; fi
+
+# todo
+
 . $mt/checks/file "${ISSUER}"
 
 echo "https://github.com/${REPOSITORY_OWNER}/${REPOSITORY_NAME}/releases/tag/${RELEASE_VERSION}"
