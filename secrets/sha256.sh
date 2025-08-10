@@ -10,12 +10,10 @@ ISSUER="$1"
 
 rm "${ISSUER}.sha256"
 
-cat "${ISSUER}" | openssl dgst -sha256 -binary | xxd -p -c 64 > "${ISSUER}.sha256"
+HASH="$(openssl dgst -sha256 -binary "${ISSUER}" | xxd -p -c 64)"
 
-. $mt/checks/success $? "Hash \"${ISSUER}\" error!"
+. $mt/checks/eq 64 "${#HASH}" "Hash \"${ISSUER}\" error!"
+
+echo "${HASH}" > "${ISSUER}.sha256"
 
 . $mt/checks/file "${ISSUER}.sha256"
-
-HASH="$(cat "${ISSUER}.sha256")"
-
-. $mt/checks/eq 64 "${#HASH}" "Check hash \"${ISSUER}\" error!" # todo
