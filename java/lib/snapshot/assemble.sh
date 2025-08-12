@@ -1,0 +1,26 @@
+#!/usr/local/bin/bash
+
+VARIANT='snapshot'
+
+gradle "lib:assemble${VARIANT^}Metadata" \
+ && gradle "lib:assemble${VARIANT^}MavenMetadata" \
+ && gradle "lib:assemble${VARIANT^}Jar" \
+ && gradle "lib:assemble${VARIANT^}Source" \
+ && gradle "lib:assemble${VARIANT^}Pom"
+
+. $mt/checks/success $? "Assemble \"$VARIANT\" error!"
+
+ISSUER='lib/build/yml/maven-metadata.yml'
+. $mt/checks/file "${ISSUER}"
+
+ARTIFACT_ID="$(yq -erM .repository.artifactId "${ISSUER}")" || exit 1
+VERSION="$(yq -erM .version "${ISSUER}")" || exit 1
+
+ISSUER='lib/build/yml/metadata.yml'
+. $mt/checks/file "${ISSUER}"
+
+ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
+. $mt/checks/file "${ISSUER}"
+
+ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}-sources.jar"
+. $mt/checks/file "${ISSUER}"
