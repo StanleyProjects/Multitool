@@ -3,4 +3,4 @@
 echo "repository:
  owner: 'StanleyProjects'
  name: 'Multitool'
-version: '0.8.0'"
+version: '0.8.1'"

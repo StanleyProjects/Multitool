@@ -31,7 +31,7 @@ MESSAGE="
 
 . $mt/gh/release.sh "${VERSION}" "${MESSAGE}"
 
-ISSUER_NAME="${REP_NAME}-${VERSION}.jar"
+ISSUER_NAME="${REP_NAME}-${VERSION}.zip"
 ISSUER=".mt/${ISSUER_NAME}"
 
 . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}"        "${ISSUER_NAME}"

@@ -1,8 +1,5 @@
 #!/usr/local/bin/bash
 
-mt='./scripts'
-
-. $mt/gh/checkout.sh
 . $mt/gh/config.sh
 . $mt/git/merge.sh
 
@@ -15,5 +12,6 @@ VERSION="$(yq -erM .version "${ISSUER}")" || exit 1
 . $mt/git/commit.sh  "${VERSION}" "${TARGET_BRANCH} <- ${VERSION}"
 
 . $mt/../service/unit_test.sh
+. $mt/gh/push.sh
 . $mt/../service/gh/release.sh
 . $mt/../service/message.sh
