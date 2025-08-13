@@ -18,5 +18,4 @@ if [[ ! -s "${EXPECTED_FILE}" ]]; then
 if [[ "$(cat "${EXPECTED_FILE}")" == *"${EXPECTED_LINE}"* ]]; then
   echo "All checks of the file along the \"${EXPECTED_FILE}\" were successful."
 else
-  echo "Check \"${EXPECTED_FILE}\" error!"
-fi
+  echo "Check \"${EXPECTED_FILE}\" error!"; exit 1; fi
