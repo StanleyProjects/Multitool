@@ -35,7 +35,7 @@ MESSAGE+=" / "
 MESSAGE+="[Changes](${REP_URL}/compare/${TARGET_COMMIT}...${RESULT_COMMIT})"
 
 MESSAGE+=" / "
-MESSAGE+="[Artifact](${REP_URL}/releases/download/${VERSION}/${ARTIFACT_ID}-${VERSION}.jar)"
+MESSAGE+="[Artifact](${REP_URL}/releases/download/${VERSION}/${REP_NAME}-${VERSION}.zip)"
 
 ISSUER=".mt/${REP_NAME}-${VERSION}.zip"
 . $mt/checks/file "${ISSUER}"
