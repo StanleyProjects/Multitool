@@ -1,10 +1,6 @@
 /*
-!/checks
-!/gh
-!/java
-!/secrets
-!/tg
-!/vcs
+!/scripts
+!/service
 !.gitignore
 !LICENSE
 !README.md
