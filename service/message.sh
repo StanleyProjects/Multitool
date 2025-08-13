@@ -15,6 +15,9 @@ RELEASE_FILE=".mt/gh-${VERSION}-release.json"
 . $mt/checks/file "${RELEASE_FILE}"
 RELEASE_URL="$(yq -erM .html_url "${RELEASE_FILE}")" || exit 1
 
+OWNER_URL="https://github.com/${REP_OWNER}"
+REP_URL="https://github.com/${REP_OWNER}/${REP_NAME}"
+
 MESSAGE="[${REP_OWNER}](${OWNER_URL}) / [${REP_NAME}](${REP_URL})"
 
 MESSAGE+=$'\n'
