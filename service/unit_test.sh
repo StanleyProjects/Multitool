@@ -1,9 +1,7 @@
 #!/usr/local/bin/bash
 
-mt='./scripts'
-
-. ./service/eq_test.sh
-. ./service/sha256_test.sh
-. ./service/readme_test.sh
+. $mt/../service/eq_test.sh
+. $mt/../service/sha256_test.sh
+. $mt/../service/readme_test.sh
 
 echo 'All tests were successful.'
