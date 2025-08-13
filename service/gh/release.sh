@@ -37,5 +37,3 @@ ISSUER=".mt/${ISSUER_NAME}"
 . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}"        "${ISSUER_NAME}"
 . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sig"    "${ISSUER_NAME}.sig"
 . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sha256" "${ISSUER_NAME}.sha256"
-
-. $mt/java/lib/unstable/message.sh
