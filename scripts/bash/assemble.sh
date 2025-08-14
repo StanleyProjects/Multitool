@@ -1,7 +1,8 @@
 #!/usr/local/bin/bash
 
-. $mt/checks/file './assemble.sh'
-./assemble.sh
+ISSUER='./assemble.sh'
+. $mt/checks/file "${ISSUER}"
+${ISSUER}
 . $mt/checks/success $? 'Assemble error!'
 
 ISSUER='scripts/build/yml/metadata.yml'
