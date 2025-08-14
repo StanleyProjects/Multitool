@@ -10,4 +10,4 @@
 
 . $mt/gh/push.sh
 . $mt/bash/gh/release.sh
-#. $mt/bash/message.sh
+. $mt/bash/message.sh
