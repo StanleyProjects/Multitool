@@ -1,11 +1,14 @@
 #!/usr/local/bin/bash
 
-. $mt/checks/eq $# 2 'Wrong arguments!'
+. $mt/checks/eq $# 3 'Wrong arguments!'
 
 RELEASE_VERSION="$1"
 RELEASE_MESSAGE="$2"
+PRERELEASE="$3"
 
 . $mt/checks/require REPOSITORY_OWNER REPOSITORY_NAME VCS_PAT RELEASE_VERSION RELEASE_MESSAGE
+
+# todo PRERELEASE
 
 VCS_API='https://api.github.com'
 REP_URL="${VCS_API}/repos/${REPOSITORY_OWNER}/${REPOSITORY_NAME}"
