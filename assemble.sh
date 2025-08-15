@@ -13,4 +13,4 @@ REP_NAME="$(yq -erM .repository.name "${ISSUER}")" || exit 1
 
 mkdir -p 'build/zip'
 ISSUER="build/zip/${REP_NAME}-${VERSION}.zip"
-zip -r "${ISSUER}" scripts LICENSE README.md
+zip -r "${ISSUER}" src/main/bash LICENSE README.md
