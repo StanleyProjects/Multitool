@@ -5,10 +5,11 @@
 RELEASE_VERSION="$1"
 RELEASE_MESSAGE="$2"
 PRERELEASE="$3"
+DRAFT='false' # todo
 
 . $mt/checks/require REPOSITORY_OWNER REPOSITORY_NAME VCS_PAT RELEASE_VERSION RELEASE_MESSAGE
 
-# todo PRERELEASE
+. $mt/checks/one_of.sh "${PRERELEASE}" 'false' 'true'
 
 VCS_API='https://api.github.com'
 REP_URL="${VCS_API}/repos/${REPOSITORY_OWNER}/${REPOSITORY_NAME}"
@@ -41,8 +42,10 @@ TAG_VERIFIED="$(yq -erM .verification.verified "${ISSUER}")" || exit 1
 COMMIT_SHA="$(yq -erM .object.sha "${ISSUER}")" || exit 1
 . $mt/checks/filled "${COMMIT_SHA}" 'Commit SHA is empty!'
 
-REQUEST_BODY='{draft: false, prerelease: true}'
+REQUEST_BODY='{}'
 for it in \
+  ".draft=${DRAFT}" \
+  ".prerelease=${PRERELEASE}" \
   ".name=\"${RELEASE_VERSION}\"" \
   ".tag_name=\"${RELEASE_VERSION}\"" \
   ".target_commitish=\"${COMMIT_SHA}\"" \

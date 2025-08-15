@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 
-ISSUER='checks/one_of'
+ISSUER='checks/one_of.sh'
 
 ACTUAL_VALUE="$($mt/${ISSUER} foo bar baz)"
 . $mt/../service/assert.sh "${ISSUER}" $? 1
