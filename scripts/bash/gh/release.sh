@@ -34,7 +34,7 @@ MESSAGE="
 [Changes](${REP_URL}/compare/${TARGET_COMMIT}...${RESULT_COMMIT}) from [${TARGET_COMMIT::7}](${REP_URL}/commit/${TARGET_COMMIT}) to [${RESULT_COMMIT::7}](${REP_URL}/commit/${RESULT_COMMIT})
 "
 
-. $mt/gh/release.sh "${VERSION}" "${MESSAGE}"
+. $mt/gh/release.sh "${VERSION}" "${MESSAGE}" 'false'
 
 ISSUER_NAME="${REP_NAME}-${VERSION}.zip"
 ISSUER="scripts/build/zip/${ISSUER_NAME}"

@@ -8,11 +8,12 @@ ACTUAL="$1"
 if test -z "${ACTUAL}"; then
  echo 'Value is empty'; exit 1; fi
 
+FOUND='false'
 for (( INDEX=2; INDEX<=$#; INDEX++ )); do
  EXPECTED="${!INDEX}"
  if [ "${ACTUAL}" == "${EXPECTED}" ]; then
-  exit 0; fi
+  FOUND='true'; break; fi
 done
 
-echo "Value \"${ACTUAL}\" not found!"
-exit 1
+if [ "${FOUND}" != 'true' ]; then
+ echo "Value \"${ACTUAL}\" not found!"; exit 1; fi
