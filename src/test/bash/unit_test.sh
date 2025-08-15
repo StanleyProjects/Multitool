@@ -4,7 +4,7 @@ tests='src/test/bash'
 asserts="${tests}/asserts"
 mt='src/main/bash'
 
-# todo
+. $tests/checks/eq_test.sh
 . $tests/readme_test.sh
 . $tests/license_test.sh
 
