@@ -5,6 +5,7 @@ asserts="${tests}/asserts"
 mt='src/main/bash'
 
 . $tests/checks/eq_test.sh
+. $tests/checks/file_test.sh
 . $tests/readme_test.sh
 . $tests/license_test.sh
 
