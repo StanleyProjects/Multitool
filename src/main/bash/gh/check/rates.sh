@@ -7,6 +7,7 @@ CODE="$(curl -s -w %{http_code} -o "${ISSUER}" "${VCS_URL}")"
 . $mt/checks/eq.sh $CODE 200 "Get limits error!"
 . $mt/checks/file.sh "${ISSUER}"
 
+LIMIT="$(yq -erM .rate.limit "${ISSUER}")" || exit 1
 REMAINING="$(yq -erM .rate.remaining "${ISSUER}")" || exit 1
 
-. $mt/checks/gt.sh "${REMAINING}" 20 "Remaining ${REMAINING}!"
+. $mt/checks/gt.sh "${REMAINING}" 20 "Remaining ${REMAINING}/${LIMIT}!"
