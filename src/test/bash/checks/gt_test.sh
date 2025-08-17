@@ -14,6 +14,10 @@ ACTUAL_VALUE="$(${ISSUER} 1 2)"
 . $asserts/ne.sh $? 0
 . $asserts/eq.sh "${ACTUAL_VALUE}" 'Wrong arguments!'
 
+ACTUAL_VALUE="$(${ISSUER} 1 2 3 4)"
+. $asserts/ne.sh $? 0
+. $asserts/eq.sh "${ACTUAL_VALUE}" 'Wrong arguments!'
+
 ACTUAL_VALUE="$(${ISSUER} 1 2 '')"
 . $asserts/ne.sh $? 0
 . $asserts/eq.sh "${ACTUAL_VALUE}" 'No message!'
