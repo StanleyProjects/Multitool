@@ -8,6 +8,7 @@ mt='src/main/bash'
 . $tests/checks/file_test.sh
 . $tests/checks/filled_test.sh
 . $tests/checks/gt_test.sh
+. $tests/checks/lt_test.sh
 
 . $tests/readme_test.sh
 . $tests/license_test.sh
