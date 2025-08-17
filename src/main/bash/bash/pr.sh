@@ -1,5 +1,7 @@
 #!/usr/local/bin/bash
 
+. $mt/gh/check/rates.sh
+
 . $mt/gh/checkout.sh
 . $mt/gh/config.sh
 . $mt/git/merge.sh
