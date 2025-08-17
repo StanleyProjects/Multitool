@@ -3,7 +3,6 @@
 if test $# -ne 1; then
  echo 'Wrong arguments!'; exit 1; fi
 
-
 if test -z "$1"; then
  echo 'No file name!'; exit 1
 elif [[ ! -f "$1" ]]; then
