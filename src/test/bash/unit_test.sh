@@ -10,6 +10,7 @@ mt='src/main/bash'
 . $tests/checks/gt_test.sh
 . $tests/checks/lt_test.sh
 . $tests/checks/ne_test.sh
+. $tests/secrets/sha1_test.sh
 
 . $tests/readme_test.sh
 . $tests/license_test.sh
