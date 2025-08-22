@@ -5,8 +5,6 @@
 VCS_API='https://api.github.com'
 
 ISSUER='.mt/gh-gpg-keys.json'
-curl -f "${VCS_API}/user/gpg_keys" -H "Authorization: token ${VCS_PAT}" -o "${ISSUER}"
-. $mt/checks/success.sh $? 'Get GPG keys error!'
 . $mt/checks/file.sh "${ISSUER}"
 GPG_KEY_ID="$(yq -erM .[0].key_id "${ISSUER}")" || exit 1
 
