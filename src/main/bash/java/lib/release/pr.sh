@@ -10,7 +10,9 @@
 . $mt/java/lib/commit.sh
 . $mt/java/lib/release/check.sh
 
-. $mt/gh/push.sh
+# . $mt/gh/push.sh # todo
+
+# todo deploy docs
 . $mt/java/lib/release/mvn/deploy.sh
 
 echo 'Not implemented!'; exit 1 # todo
