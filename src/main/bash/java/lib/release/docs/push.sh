@@ -81,7 +81,8 @@ git -C "${DOCS_PATH}" add . \
 
 . $mt/checks/success.sh $? 'Commit docs error!'
 
-git -C "${DOCS_PATH}" push --follow-tags
+git -C "${DOCS_PATH}" push \
+ && git -C "${DOCS_PATH}" push --follow-tags
 
 . $mt/checks/success.sh $? 'Push docs error!'
 

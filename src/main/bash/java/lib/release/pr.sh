@@ -12,11 +12,14 @@
 
 # . $mt/gh/push.sh # todo
 
-# todo deploy docs
+. $mt/java/lib/release/docs/push.sh
 
 echo 'Not implemented!'; exit 1 # todo
 
 . $mt/java/lib/release/mvn/deploy.sh
+
+echo 'Not implemented!'; exit 1 # todo
+
 . $mt/java/lib/release/gh/release.sh
 
 echo 'Not implemented!'; exit 1 # todo

@@ -1,6 +1,7 @@
 #!/usr/local/bin/bash
 
-git push --follow-tags
+git push \
+ && git push --follow-tags
 
 . $mt/checks/success.sh $? 'Push error!'
 
