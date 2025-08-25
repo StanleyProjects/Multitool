@@ -14,9 +14,5 @@
 
 # . $mt/java/lib/release/docs/push.sh # todo
 # . $mt/java/lib/release/mvn/deploy.sh # todo
-
 . $mt/java/lib/release/gh/release.sh
-
-echo 'Not implemented!'; exit 1 # todo
-
 . $mt/java/lib/release/message.sh
