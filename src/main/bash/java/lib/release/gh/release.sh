@@ -45,7 +45,7 @@ MESSAGE="
 - [Docs](https://${REPOSITORY_OWNER}.github.io/${REPOSITORY_NAME}/docs/${VERSION})
 "
 
-. $mt/gh/release.sh "${VERSION}" "${MESSAGE}" 'true'
+. $mt/gh/release.sh "${VERSION}" "${MESSAGE}" 'false'
 
 ISSUER_NAME="${ARTIFACT_ID}-${VERSION}.jar"
 ISSUER="lib/build/libs/${ISSUER_NAME}"
