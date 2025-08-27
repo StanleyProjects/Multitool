@@ -1,12 +1,12 @@
 #!/usr/local/bin/bash
 
 if test $# -lt 3; then
- echo 'Wrong arguments!'; exit 1; fi
+ echo 'Too few arguments!'; exit 1; fi
 
 ACTUAL="$1"
 
 if test -z "${ACTUAL}"; then
- echo 'Value is empty'; exit 1; fi
+ echo 'Value is empty!'; exit 1; fi
 
 FOUND='false'
 for (( INDEX=2; INDEX<=$#; INDEX++ )); do

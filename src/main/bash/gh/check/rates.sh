@@ -10,4 +10,4 @@ CODE="$(curl -s -w %{http_code} -o "${ISSUER}" "${VCS_URL}")"
 LIMIT="$(yq -erM .rate.limit "${ISSUER}")" || exit 1
 REMAINING="$(yq -erM .rate.remaining "${ISSUER}")" || exit 1
 
-. $mt/checks/gt.sh "${REMAINING}" 20 "Remaining ${REMAINING}/${LIMIT}!"
+. $mt/checks/gt.sh "${REMAINING}" 30 "Remaining ${REMAINING}/${LIMIT}!"
