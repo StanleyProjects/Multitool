@@ -29,8 +29,8 @@ for it in \
  "${SOURCES_FILE}" \
  "${JAVADOC_FILE}"; do
  . $mt/checks/file.sh            "${it}"
- . $mt/secrets/sha1.sh           "${it}"
- . $mt/secrets/md5.sh            "${it}"
+ . $mt/hashes/md5.sh             "${it}"
+ . $mt/hashes/sha1.sh            "${it}"
  . $mt/secrets/sign/gpg.sh       "${it}" "${GPG_KEY_ID}" "${GPG_PASSWORD}"
  . $mt/secrets/sign/gpg/check.sh "${it}" "${GPG_KEY_ID}"
 done
