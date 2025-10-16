@@ -30,6 +30,15 @@ MESSAGE+="
 \`*\` [${TARGET_COMMIT::7}](${REP_URL}/commit/${TARGET_COMMIT})
 "
 
+HASHES="build/zip/${REP_NAME}-${VERSION}-hashes.txt"
+. $mt/checks/file.sh "${HASHES}"
+
+MESSAGE+="
+\`\`\`
+$(cat "${HASHES}")
+\`\`\`
+"
+
 MESSAGE+=$'\n'
 MESSAGE+="\`${VERSION}\`"
 
