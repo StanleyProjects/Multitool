@@ -26,12 +26,14 @@ ISSUER="build/zip/${REP_NAME}-${VERSION}.zip"
 . $mt/secrets/sign.sh              "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
 . $mt/secrets/sign/check.sh        "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
 . $mt/secrets/sign/check/public.sh "${ISSUER}" "${PUBLIC_KEY}"
-. $mt/hashes/assemble.sh           "${ISSUER}" "build/zip/${REP_NAME}-${VERSION}-hashes.txt"
+. $mt/hashes/sha256.sh             "${ISSUER}"
 
 REP_URL="https://github.com/${REP_OWNER}/${REP_NAME}"
 
 MESSAGE="
 [Changes](${REP_URL}/compare/${TARGET_COMMIT}...${RESULT_COMMIT}) from [${TARGET_COMMIT::7}](${REP_URL}/commit/${TARGET_COMMIT}) to [${RESULT_COMMIT::7}](${REP_URL}/commit/${RESULT_COMMIT})
+
+sha256: \`$(cat "${ISSUER}.sha256" | xxd -p -c 64)\`
 "
 
 . $mt/gh/release.sh "${VERSION}" "${MESSAGE}" 'false'
@@ -41,8 +43,4 @@ ISSUER="build/zip/${ISSUER_NAME}"
 
 . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}"        "${ISSUER_NAME}"
 . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sig"    "${ISSUER_NAME}.sig"
-. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.md5"    "${ISSUER_NAME}.md5"
-. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sha1"   "${ISSUER_NAME}.sha1"
 . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sha256" "${ISSUER_NAME}.sha256"
-. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sha512" "${ISSUER_NAME}.sha512"
-. $mt/gh/release/upload.sh "${VERSION}" "build/zip/${REP_NAME}-${VERSION}-hashes.txt" "${REP_NAME}-${VERSION}-hashes.txt"
