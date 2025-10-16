@@ -1,21 +1,23 @@
 #!/usr/local/bin/bash
 
-. $mt/checks/eq.sh $# 1 'Wrong arguments!'
+. $mt/checks/eq.sh $# 2 'Wrong arguments!'
 
-ISSUER="$1"
+SRC_NAME="$1"
+DST_NAME="$2"
 
-. $mt/checks/filled.sh "${ISSUER}" 'No file name!'
+. $mt/checks/filled.sh "${SRC_NAME}" 'No src name!'
+. $mt/checks/filled.sh "${DST_NAME}" 'No dst name!'
 
-. $mt/checks/file.sh "${ISSUER}"
+. $mt/checks/file.sh "${SRC_NAME}"
 
-. $mt/checks/file.sh "${ISSUER}.md5"
-. $mt/checks/file.sh "${ISSUER}.sha1"
-. $mt/checks/file.sh "${ISSUER}.sha256"
-. $mt/checks/file.sh "${ISSUER}.sha512"
+. $mt/hashes/md5.sh "${SRC_NAME}"
+. $mt/hashes/sha1.sh "${SRC_NAME}"
+. $mt/hashes/sha256.sh "${SRC_NAME}"
+. $mt/hashes/sha512.sh "${SRC_NAME}"
 
-rm "${ISSUER}-hashes.txt" &> /dev/null
+rm "${DST_NAME}" &> /dev/null
 
-echo "md5:    $(cat "${ISSUER}.md5"    | xxd -p -c 64 )" >> "${ISSUER}-hashes.txt"
-echo "sha1:   $(cat "${ISSUER}.sha1"   | xxd -p -c 64 )" >> "${ISSUER}-hashes.txt"
-echo "sha256: $(cat "${ISSUER}.sha256" | xxd -p -c 64 )" >> "${ISSUER}-hashes.txt"
-echo "sha512: $(cat "${ISSUER}.sha512" | xxd -p -c 128)" >> "${ISSUER}-hashes.txt"
+echo "md5:    $(cat "${SRC_NAME}.md5"    | xxd -p -c 64 )" >> "${DST_NAME}"
+echo "sha1:   $(cat "${SRC_NAME}.sha1"   | xxd -p -c 64 )" >> "${DST_NAME}"
+echo "sha256: $(cat "${SRC_NAME}.sha256" | xxd -p -c 64 )" >> "${DST_NAME}"
+echo "sha512: $(cat "${SRC_NAME}.sha512" | xxd -p -c 128)" >> "${DST_NAME}"
