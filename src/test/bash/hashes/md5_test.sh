@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 
-ISSUER="${mt}/secrets/md5.sh"
+ISSUER="${mt}/hashes/md5.sh"
 
 ACTUAL_VALUE="$(${ISSUER})"
 . $asserts/ne.sh $? 0
@@ -32,4 +32,4 @@ echo -n 'foo bar baz' > "${FILE_NAME}"
 ACTUAL_VALUE="$(${ISSUER} "${FILE_NAME}")"
 . $asserts/eq.sh $? 0
 . $asserts/eq.sh "${ACTUAL_VALUE}" ''
-. $asserts/eq.sh "$(cat "${FILE_NAME}.md5")" 'ab07acbb1e496801937adfa772424bf7'
+. $asserts/eq.sh "$(cat "${FILE_NAME}.md5" | xxd -p -c 64)" 'ab07acbb1e496801937adfa772424bf7'
