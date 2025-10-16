@@ -31,7 +31,7 @@ ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
 . $mt/secrets/sign/jar/check.sh    "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
 . $mt/secrets/sign/check.sh        "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
 . $mt/secrets/sign/check/public.sh "${ISSUER}" "${PUBLIC_KEY}"
-. $mt/secrets/sha256.sh            "${ISSUER}"
+. $mt/hashes/sha256.sh             "${ISSUER}"
 
 MVN_URL='https://central.sonatype.com/repository/maven-snapshots'
 MVN_REP="${MVN_URL}/${GROUP_ID//.//}/${ARTIFACT_ID}"
