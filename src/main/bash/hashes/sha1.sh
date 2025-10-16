@@ -10,10 +10,8 @@ ISSUER="$1"
 
 rm "${ISSUER}.sha1" &> /dev/null
 
-HASH="$(openssl dgst -sha1 -binary "${ISSUER}" | xxd -p -c 64)"
+openssl dgst -sha1 -binary "${ISSUER}" > "${ISSUER}.sha1"
 
-. $mt/checks/eq.sh 40 "${#HASH}" "Hash \"${ISSUER}\" error!"
+HEX="$(cat "${ISSUER}.sha1" | xxd -p -c 64)"
 
-echo "${HASH}" > "${ISSUER}.sha1"
-
-. $mt/checks/file.sh "${ISSUER}.sha1"
+. $mt/checks/eq.sh 40 "${#HEX}" "Hash \"${ISSUER}\" error!"

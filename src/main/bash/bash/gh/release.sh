@@ -22,11 +22,11 @@ curl -f "https://${REP_OWNER}.github.io/debug-public.pem" -o "${PUBLIC_KEY}"
 
 ISSUER="build/zip/${REP_NAME}-${VERSION}.zip"
 
-. $mt/checks/file.sh                  "${ISSUER}"
+. $mt/checks/file.sh               "${ISSUER}"
 . $mt/secrets/sign.sh              "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
 . $mt/secrets/sign/check.sh        "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
 . $mt/secrets/sign/check/public.sh "${ISSUER}" "${PUBLIC_KEY}"
-. $mt/secrets/sha256.sh            "${ISSUER}"
+. $mt/hashes/assemble.sh           "${ISSUER}" "build/zip/${REP_NAME}-${VERSION}-hashes.txt"
 
 REP_URL="https://github.com/${REP_OWNER}/${REP_NAME}"
 
@@ -41,4 +41,8 @@ ISSUER="build/zip/${ISSUER_NAME}"
 
 . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}"        "${ISSUER_NAME}"
 . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sig"    "${ISSUER_NAME}.sig"
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.md5"    "${ISSUER_NAME}.md5"
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sha1"   "${ISSUER_NAME}.sha1"
 . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sha256" "${ISSUER_NAME}.sha256"
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sha512" "${ISSUER_NAME}.sha512"
+. $mt/gh/release/upload.sh "${VERSION}" "build/zip/${REP_NAME}-${VERSION}-hashes.txt" "${REP_NAME}-${VERSION}-hashes.txt"

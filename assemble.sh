@@ -6,7 +6,7 @@ ISSUER='build/yml/metadata.yml'
 echo "repository:
  owner: 'StanleyProjects'
  name: 'Multitool'
-version: '0.10.0'" > "${ISSUER}"
+version: '0.11.0'" > "${ISSUER}"
 
 VERSION="$(yq -erM .version "${ISSUER}")" || exit 1
 REP_NAME="$(yq -erM .repository.name "${ISSUER}")" || exit 1
