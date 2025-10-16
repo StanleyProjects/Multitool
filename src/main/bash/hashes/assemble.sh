@@ -17,7 +17,7 @@ DST_NAME="$2"
 
 rm "${DST_NAME}" &> /dev/null
 
-echo "md5: $(cat "${SRC_NAME}.md5"    | xxd -p -c 64 )" >> "${DST_NAME}"
-echo "sha1: $(cat "${SRC_NAME}.sha1"   | xxd -p -c 64 )" >> "${DST_NAME}"
-echo "sha256: $(cat "${SRC_NAME}.sha256" | xxd -p -c 64 )" >> "${DST_NAME}"
+echo "md5: $(cat "${SRC_NAME}.md5" | xxd -p -c 64)" >> "${DST_NAME}"
+echo "sha1: $(cat "${SRC_NAME}.sha1" | xxd -p -c 64)" >> "${DST_NAME}"
+echo "sha256: $(cat "${SRC_NAME}.sha256" | xxd -p -c 64)" >> "${DST_NAME}"
 echo "sha512: $(cat "${SRC_NAME}.sha512" | xxd -p -c 128)" >> "${DST_NAME}"
