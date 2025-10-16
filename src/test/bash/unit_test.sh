@@ -12,6 +12,7 @@ mt='src/main/bash'
 . $tests/checks/ne_test.sh
 . $tests/checks/one_of_test.sh
 . $tests/hashes/md5_test.sh
+. $tests/hashes/sha1_test.sh
 
 . $tests/readme_test.sh
 . $tests/license_test.sh
