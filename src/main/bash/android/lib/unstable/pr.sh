@@ -6,9 +6,10 @@
 . $mt/gh/config.sh
 . $mt/git/merge.sh
 
+. $mt/android/lib/unstable/assemble.sh
+
 echo 'Not implemented!'; exit 1 # todo
 
-. $mt/android/lib/unstable/assemble.sh
 . $mt/android/lib/commit.sh
 . $mt/android/lib/unstable/check.sh
 
