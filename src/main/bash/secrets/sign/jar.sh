@@ -21,8 +21,9 @@ RESULT="$(jarsigner -verify "${ISSUER}")"
 
 . $mt/checks/success.sh $? "Check signature of \"${ISSUER}\" error!"
 
-if test "${RESULT//$'\n'/}" != "jar is unsigned."; then
- echo "Jar \"${ISSUER}\" already signed!"; exit 1; fi
+if [[ "$RESULT" == *"jar is unsigned." ]]; then
+ echo 'Jar is unsigned.'
+else echo "Jar \"$ISSUER\" already signed!"; exit 1; fi
 
 jarsigner -keystore "${KEYSTORE}" \
  -keypass "${KEYSTORE_PASSWORD}" -storepass "${KEYSTORE_PASSWORD}" \
