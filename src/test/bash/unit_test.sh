@@ -11,6 +11,7 @@ mt='src/main/bash'
 . $tests/checks/lt_test.sh
 . $tests/checks/ne_test.sh
 . $tests/checks/one_of_test.sh
+. $tests/checks/require_test.sh
 . $tests/gh/checkout_test.sh
 . $tests/gh/tag/test_test.sh
 . $tests/hashes/assemble_test.sh
