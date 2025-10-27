@@ -13,7 +13,4 @@
 . $mt/gh/push.sh
 . $mt/android/lib/unstable/mvn/deploy.sh
 . $mt/android/lib/unstable/gh/release.sh
-
-echo 'Not implemented!'; exit 1 # todo
-
 . $mt/android/lib/unstable/message.sh
