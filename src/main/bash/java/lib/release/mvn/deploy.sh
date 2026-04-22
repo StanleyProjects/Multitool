@@ -18,28 +18,24 @@ GROUP_ID="$(yq -erM .repository.groupId "${ISSUER}")" || exit 1
 ARTIFACT_ID="$(yq -erM .repository.artifactId "${ISSUER}")" || exit 1
 MVN_GROUP="${GROUP_ID//.//}"
 
-ARTIFACT_FILE="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
-SOURCES_FILE="lib/build/libs/${ARTIFACT_ID}-${VERSION}-sources.jar"
-POM_FILE="lib/build/libs/${ARTIFACT_ID}-${VERSION}.pom"
-JAVADOC_FILE="lib/build/libs/${ARTIFACT_ID}-${VERSION}-javadoc.jar"
+SRC_DIR='lib/build/libs'
+DST_DIR=".excluded/mvn/${MVN_GROUP}/${ARTIFACT_ID}/${VERSION}"
+rm -rf '.excluded/mvn'
+mkdir -p "${DST_DIR}"
 
 for it in \
- "${POM_FILE}" \
- "${ARTIFACT_FILE}" \
- "${SOURCES_FILE}" \
- "${JAVADOC_FILE}"; do
- . $mt/checks/file.sh            "${it}"
- . $mt/hashes/md5.sh             "${it}"
- . $mt/hashes/sha1.sh            "${it}"
- . $mt/secrets/sign/gpg.sh       "${it}" "${GPG_KEY_ID}" "${GPG_PASSWORD}"
- . $mt/secrets/sign/gpg/check.sh "${it}" "${GPG_KEY_ID}"
+ "${ARTIFACT_ID}-${VERSION}.jar" \
+ "${ARTIFACT_ID}-${VERSION}-sources.jar" \
+ "${ARTIFACT_ID}-${VERSION}.pom" \
+ "${ARTIFACT_ID}-${VERSION}-javadoc.jar"; do
+ cp "${SRC_DIR}/${it}" "${DST_DIR}/${it}"
+ . $mt/checks/success.sh $? "Copy \"${SRC_DIR}/${it}\" error!"
+ . $mt/checks/file.sh            "${DST_DIR}/${it}"
+ . $mt/hashes/hex/md5.sh         "${DST_DIR}/${it}"
+ . $mt/hashes/hex/sha1.sh        "${DST_DIR}/${it}"
+ . $mt/secrets/sign/gpg.sh       "${DST_DIR}/${it}" "${GPG_KEY_ID}" "${GPG_PASSWORD}"
+ . $mt/secrets/sign/gpg/check.sh "${DST_DIR}/${it}" "${GPG_KEY_ID}"
 done
-
-rm -rf '.excluded/mvn'
-mkdir -p ".excluded/mvn/${MVN_GROUP}/${ARTIFACT_ID}"
-
-cp -r 'lib/build/libs' ".excluded/mvn/${MVN_GROUP}/${ARTIFACT_ID}/${VERSION}"
-. $mt/checks/success.sh $? 'Copy error!'
 
 DIR="$(pwd)"
 cd '.excluded/mvn'; zip -r "${ARTIFACT_ID}-${VERSION}.zip" *; cd "${DIR}"
