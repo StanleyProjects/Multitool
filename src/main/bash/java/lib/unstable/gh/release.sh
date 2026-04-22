@@ -31,7 +31,10 @@ ISSUER="lib/build/libs/${ARTIFACT_ID}-${VERSION}.jar"
 . $mt/secrets/sign/jar/check.sh    "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}" "${KEY_ALIAS}"
 . $mt/secrets/sign/check.sh        "${ISSUER}" "${KEYSTORE}" "${KEYSTORE_PASSWORD}"
 . $mt/secrets/sign/check/public.sh "${ISSUER}" "${PUBLIC_KEY}"
+. $mt/hashes/md5.sh                "${ISSUER}"
+. $mt/hashes/sha1.sh               "${ISSUER}"
 . $mt/hashes/sha256.sh             "${ISSUER}"
+. $mt/hashes/sha512.sh             "${ISSUER}"
 
 MVN_URL='https://central.sonatype.com/repository/maven-snapshots'
 MVN_REP="${MVN_URL}/${GROUP_ID//.//}/${ARTIFACT_ID}"
@@ -51,7 +54,10 @@ ISSUER="lib/build/libs/${ISSUER_NAME}"
 
 . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}"        "${ISSUER_NAME}"
 . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sig"    "${ISSUER_NAME}.sig"
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.md5"    "${ISSUER_NAME}.md5"
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sha1"   "${ISSUER_NAME}.sha1"
 . $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sha256" "${ISSUER_NAME}.sha256"
+. $mt/gh/release/upload.sh "${VERSION}" "${ISSUER}.sha512" "${ISSUER_NAME}.sha512"
 
 ISSUER_NAME="${ARTIFACT_ID}-${VERSION}-sources.jar"
 ISSUER="lib/build/libs/${ISSUER_NAME}"
