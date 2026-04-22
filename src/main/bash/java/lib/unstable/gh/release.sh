@@ -16,8 +16,8 @@ RESULT_COMMIT="$(yq -erM .sha "${ISSUER}")" || exit 1
 
 . $mt/checks/require.sh REPOSITORY_OWNER REPOSITORY_NAME VERSION GROUP_ID ARTIFACT_ID TARGET_COMMIT RESULT_COMMIT
 
-PUBLIC_KEY='.mt/public.pem'
-curl -f "https://${REPOSITORY_OWNER}.github.io/debug-public.pem" -o "${PUBLIC_KEY}"
+PUBLIC_KEY=".mt/${KEY_ALIAS}-public.pem"
+curl -f "https://${REPOSITORY_OWNER}.github.io/${KEY_ALIAS}-public.pem" -o "${PUBLIC_KEY}"
 . $mt/checks/success.sh $? "Get public key \"${REPOSITORY_OWNER}\" error!"
 . $mt/checks/file.sh "${PUBLIC_KEY}"
 
